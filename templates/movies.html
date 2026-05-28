@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div><h2 class="fw-bold">Catálogo de Filmes</h2><p class="text-muted">Busque, alugue, compre e organize seus filmes.</p></div>
+    </div>
+    <form class="row g-2 mb-4" method="get">
+        <div class="col-md-6"><input class="form-control" name="q" placeholder="Buscar por nome" value="{{ query }}"></div>
+        <div class="col-md-4">
+            <select class="form-select" name="genre">
+                <option value="">Todos os gêneros</option>
+                {% for g in genres %}<option value="{{ g }}" {% if genre == g %}selected{% endif %}>{{ g }}</option>{% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2"><button class="btn btn-gradient w-100">Buscar</button></div>
+    </form>
+    <div class="row g-4">
+        {% for movie in movies %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card card-movie">
+                <img src="{{ movie.poster_url }}" class="card-img-top poster" alt="{{ movie.title }}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="text-muted mb-1">{{ movie.year }} • {{ movie.director }}</p>
+                    <span class="badge badge-genre align-self-start">{{ movie.genre }}</span>
+                    <p class="price-line mt-2 mb-2">Alugar: {{ movie.rent_price|brl }}<br>Comprar: {{ movie.buy_price|brl }}</p>
+                    <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="btn btn-gradient mt-auto">Detalhes</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12"><div class="alert alert-warning">Nenhum filme encontrado.</div></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

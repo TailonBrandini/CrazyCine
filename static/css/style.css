@@ -1,0 +1,120 @@
+:root {
+    --primary: #6c2bd9;
+    --secondary: #ec4899;
+    --dark: #14121f;
+}
+
+body {
+    background: #f7f7fb;
+    color: #202033;
+}
+
+.navbar {
+    background: linear-gradient(90deg, var(--dark), var(--primary));
+}
+
+.hero-section {
+    background: linear-gradient(135deg, rgba(20,18,31,.95), rgba(108,43,217,.92)), url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 110px 0;
+}
+
+.card {
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(25, 20, 50, 0.08);
+}
+
+.stat-card {
+    transition: .2s ease;
+}
+
+.stat-card:hover, .card-movie:hover {
+    transform: translateY(-4px);
+}
+
+.card-movie {
+    overflow: hidden;
+    height: 100%;
+    transition: .2s ease;
+}
+
+.poster {
+    height: 360px;
+    object-fit: cover;
+    background: #ddd;
+}
+
+.poster-detail {
+    border-radius: 18px;
+    width: 100%;
+    max-height: 620px;
+    object-fit: cover;
+}
+
+.btn-gradient {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+}
+
+.btn-gradient:hover {
+    color: white;
+    opacity: .9;
+}
+
+.badge-genre {
+    background: #efe7ff;
+    color: #5b21b6;
+}
+
+.auth-card {
+    max-width: 460px;
+    margin: 60px auto;
+}
+
+.price-line {
+    color: #5b21b6;
+    font-weight: 700;
+    font-size: .92rem;
+}
+
+.display-price {
+    color: #5b21b6;
+    font-weight: 800;
+    font-size: 1.6rem;
+}
+
+.purchase-card {
+    border: 1px solid #eee;
+}
+
+.checkout-card {
+    border-top: 5px solid var(--primary);
+}
+
+.checkout-poster {
+    width: 115px;
+    height: 165px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+    .poster { height: 430px; }
+    .hero-section { padding: 75px 0; }
+}
+.pix-qr {
+    width: 260px;
+    max-width: 100%;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    background: #fff;
+}
+.pix-code {
+    font-size: 0.85rem;
+    resize: none;
+}
