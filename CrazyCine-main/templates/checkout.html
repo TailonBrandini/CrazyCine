@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card p-4 checkout-card">
+                <h2 class="fw-bold">Finalizar {{ action_type }}</h2>
+                <div class="d-flex gap-3 align-items-center my-3">
+                    <img src="{{ movie.poster_url }}" class="checkout-poster" alt="{{ movie.title }}">
+                    <div>
+                        <h4>{{ movie.title }}</h4>
+                        <p class="text-muted mb-1">{{ movie.genre }} • {{ movie.year }}</p>
+                        <p class="mb-1">Preço do filme: <strong>{{ price|brl }}</strong></p>
+                        <p class="display-price mb-0">Pix Mercado Pago: {{ pix_amount|brl }}</p>
+                        {% if use_demo %}
+                            <small class="text-muted">Modo apresentação: o Pix real é gerado no valor simbólico de R$ 0,01.</small>
+                        {% endif %}
+                        {% if action_type == 'aluguel' %}<br><small class="text-muted">O aluguel ficará disponível por 48 horas após aprovação.</small>{% endif %}
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    Pagamento disponível somente via Pix. Após a confirmação do Mercado Pago, o filme será liberado automaticamente em <strong>Meus Filmes</strong>.
+                </div>
+
+                <form method="post">
+                    <button class="btn btn-gradient w-100">Gerar Pix pelo Mercado Pago</button>
+                </form>
+                <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="btn btn-link mt-3">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

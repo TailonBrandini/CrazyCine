@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold">{{ movie_list.name }}</h2>
+    <p class="text-muted">Filmes salvos nesta lista.</p>
+    <div class="row g-4">
+        {% for movie in movie_list.movies %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card card-movie">
+                <img src="{{ movie.poster_url }}" class="card-img-top poster" alt="{{ movie.title }}">
+                <div class="card-body">
+                    <h5>{{ movie.title }}</h5>
+                    <a href="{{ url_for('movie_detail', movie_id=movie.id) }}" class="btn btn-sm btn-gradient w-100 mb-2">Detalhes</a>
+                    <form method="post" action="{{ url_for('remove_from_list', list_id=movie_list.id, movie_id=movie.id) }}">
+                        <button class="btn btn-sm btn-outline-danger w-100">Remover</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12"><div class="alert alert-info">Nenhum filme nesta lista.</div></div>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('lists') }}" class="btn btn-link mt-3">Voltar para listas</a>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row g-4">
+        <div class="col-md-4"><img src="{{ movie.poster_url }}" class="img-fluid poster-detail shadow" alt="{{ movie.title }}"></div>
+        <div class="col-md-8">
+            <h2 class="fw-bold">{{ movie.title }}</h2>
+            <p><span class="badge badge-genre">{{ movie.genre }}</span></p>
+            <p class="text-muted">{{ movie.year }} • Direção: {{ movie.director }}</p>
+            <p class="fs-5">{{ movie.description }}</p>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="card p-3 h-100 purchase-card">
+                        <h5>Alugar por 48 horas</h5>
+                        <p class="display-price">{{ movie.rent_price|brl }}</p>
+                        {% if active_rental %}
+                            <div class="alert alert-success py-2">Você já possui aluguel ativo.</div>
+                        {% endif %}
+                        <a href="{{ url_for('checkout', movie_id=movie.id, action_type='aluguel') }}" class="btn btn-outline-primary w-100">Alugar</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card p-3 h-100 purchase-card">
+                        <h5>Comprar para sempre</h5>
+                        <p class="display-price">{{ movie.buy_price|brl }}</p>
+                        {% if purchased %}
+                            <div class="alert alert-success py-2">Você já comprou este filme.</div>
+                        {% endif %}
+                        <a href="{{ url_for('checkout', movie_id=movie.id, action_type='compra') }}" class="btn btn-gradient w-100">Comprar</a>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" action="{{ url_for('toggle_watched', movie_id=movie.id) }}" class="mb-3">
+                <button class="btn {% if watched %}btn-success{% else %}btn-outline-success{% endif %}">
+                    {% if watched %}Assistido ✅{% else %}Marcar como assistido{% endif %}
+                </button>
+            </form>
+            <div class="card p-3">
+                <h5>Adicionar em uma lista</h5>
+                <form method="post" action="{{ url_for('add_to_list', movie_id=movie.id) }}" class="row g-2">
+                    <div class="col-md-8">
+                        <select name="list_id" class="form-select" required>
+                            {% for list in user_lists %}<option value="{{ list.id }}">{{ list.name }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4"><button class="btn btn-gradient w-100">Adicionar</button></div>
+                </form>
+            </div>
+            <a href="{{ url_for('movies') }}" class="btn btn-link mt-3">Voltar ao catálogo</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

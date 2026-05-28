@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold">Filmes Assistidos</h2>
+    <p class="text-muted">Seu histórico de filmes marcados como assistidos.</p>
+    <div class="row g-4">
+        {% for item in watched_items %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card card-movie">
+                <img src="{{ item.movie.poster_url }}" class="card-img-top poster" alt="{{ item.movie.title }}">
+                <div class="card-body">
+                    <h5>{{ item.movie.title }}</h5>
+                    <p class="text-muted">{{ item.movie.genre }}</p>
+                    <form method="post" action="{{ url_for('toggle_watched', movie_id=item.movie.id) }}">
+                        <button class="btn btn-outline-danger w-100">Remover dos assistidos</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12"><div class="alert alert-info">Nenhum filme marcado como assistido.</div></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

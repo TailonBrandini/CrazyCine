@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold">Meus Filmes</h2>
+    <p class="text-muted">Histórico de compras, aluguéis e pagamentos Pix.</p>
+    <div class="row g-4">
+        {% for item in items %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card card-movie">
+                <img src="{{ item.movie.poster_url }}" class="card-img-top poster" alt="{{ item.movie.title }}">
+                <div class="card-body">
+                    <h5>{{ item.movie.title }}</h5>
+                    <span class="badge {% if item.type == 'compra' %}text-bg-success{% else %}text-bg-primary{% endif %}">{{ item.type|capitalize }}</span>
+                    {% if item.status == 'aprovado' %}
+                        <span class="badge text-bg-success">Pago</span>
+                    {% elif item.status == 'pendente' %}
+                        <span class="badge text-bg-warning">Pendente</span>
+                    {% else %}
+                        <span class="badge text-bg-danger">{{ item.status }}</span>
+                    {% endif %}
+                    <p class="mt-2 mb-1">Valor do filme: {{ item.price|brl }}</p>
+                    <p class="text-muted mb-1">Pagamento: Pix / Mercado Pago</p>
+
+                    {% if item.status != 'aprovado' %}
+                        <p class="text-warning small">Aguardando pagamento Pix.</p>
+                        <a href="{{ url_for('payment_pending', transaction_id=item.id) }}" class="btn btn-sm btn-warning w-100">Ver Pix</a>
+                    {% elif item.type == 'aluguel' %}
+                        {% if item.expires_at and item.expires_at > now %}
+                            <p class="text-success small">Liberado até {{ item.expires_at.strftime('%d/%m/%Y %H:%M') }}</p>
+                            <a href="{{ url_for('movie_detail', movie_id=item.movie.id) }}" class="btn btn-sm btn-gradient w-100">Abrir filme</a>
+                        {% else %}
+                            <p class="text-danger small">Aluguel expirado</p>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-success small">Compra permanente liberada</p>
+                        <a href="{{ url_for('movie_detail', movie_id=item.movie.id) }}" class="btn btn-sm btn-gradient w-100">Abrir filme</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12"><div class="alert alert-info">Você ainda não comprou ou alugou filmes.</div></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

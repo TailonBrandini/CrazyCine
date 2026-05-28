@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold">Minhas Listas</h2>
+    <form method="post" action="{{ url_for('create_list') }}" class="row g-2 my-4">
+        <div class="col-md-9"><input name="name" class="form-control" placeholder="Nome da nova lista" required></div>
+        <div class="col-md-3"><button class="btn btn-gradient w-100">Criar lista</button></div>
+    </form>
+    <div class="row g-4">
+        {% for list in user_lists %}
+        <div class="col-md-4">
+            <div class="card stat-card p-4 h-100">
+                <h4>{{ list.name }}</h4>
+                <p class="text-muted">{{ list.movies|length }} filme(s)</p>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('list_detail', list_id=list.id) }}" class="btn btn-gradient">Abrir</a>
+                    <form method="post" action="{{ url_for('delete_list', list_id=list.id) }}" onsubmit="return confirm('Deseja remover esta lista?')">
+                        <button class="btn btn-outline-danger">Excluir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12"><div class="alert alert-info">Você ainda não criou listas.</div></div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
