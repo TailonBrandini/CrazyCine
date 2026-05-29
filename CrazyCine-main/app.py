@@ -10,11 +10,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'troque-essa-chave-secreta'
-# Ajuste dinâmico para evitar o erro de Read-only filesystem na Vercel
-if os.environ.get('VERCEL'):
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/crazycine.db'
+
+# Configuração para o Render (SQLite local persistente na pasta do projeto)
+if os.environ.get('RENDER'):
+    # No Render, usamos o caminho absoluto do diretório de execução para garantir a escrita
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(base_dir, "crazycine.db")}'
 else:
+    # No seu computador local
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///crazycine.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 MERCADO_PAGO_ACCESS_TOKEN = os.getenv('MERCADO_PAGO_ACCESS_TOKEN', '')
